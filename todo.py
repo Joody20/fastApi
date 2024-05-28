@@ -1,42 +1,44 @@
 from fastapi import APIRouter,Path
-from model import Todo
+from model import Name
+from datetime import datetime
 
-todo_router = APIRouter()
+User_router = APIRouter()
 
-todo_list = []
-todo_counter = 0
+name_list = []
+name_counter = 0
 
-@todo_router.post("/todo")
-async def add_todo(todo:Todo) -> dict:
-    global todo_counter
-    todo.id = todo_counter = todo_counter + 1
-    todo_list.append(todo)
+@User_router.post("/user")
+async def add_name(name:Name) -> dict:
+    global name_counter
+    name.id = name_counter = name_counter + 1
+    name.created_at = name.created_at or datetime.now()
+    name_list.append(name)
 
     return{
-        "msg": "todo success"
+        "msg": "Insert success"
     }
 
-@todo_router.get("/todo")
+@User_router.get("/user")
 async def retrieve_todos() -> dict:
     return {
-        "todos" : todo_list
+        "Users" : name_list
     }
 
 
-@todo_router.get("/todo/{todo_id}")
-async def get_single_todo(todo_id:int = Path(..., title="ID")) -> dict:
-    for todo in todo_list:
-        if todo.id == todo_id:
+@User_router.get("/user/{name_id}")
+async def get_single_todo(name_id:int = Path(..., title="ID")) -> dict:
+    for name in name_list:
+        if name.id == name_id:
             return {
-                "todo": todo
+                "Users": name
             }
         
     return {"msg": "there is no task with the ID!"}   
 
-@todo_router.delete("/todo/{todo_id}")
-async def delete_todo(todo_id: int = Path(..., title="the ID of the todo to delete")) -> dict:
-    for index,todo in enumerate(todo_list):
-        if todo.id == todo_id:
-            del todo_list[index]
-            return{"msg":f"Todo with ID {todo_id} deleted successfully! ^^"}
-    return {"msg": "Todo with supplied ID doesn't exist!"}     
+@User_router.delete("/user/{name_id}")
+async def delete_todo(name_id: int = Path(..., title="the ID of the todo to delete")) -> dict:
+    for index,name in enumerate(name_list):
+        if name.id == name_id:
+            del name_list[index]
+            return{"msg":f"User with ID {name_id} deleted successfully! ^^"}
+    return {"msg": "User with supplied ID doesn't exist!"}     

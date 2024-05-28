@@ -1,5 +1,12 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
+from datetime import datetime
 
-class Todo(BaseModel):
+
+def get_current_time():
+    return datetime.now()
+
+class Name(BaseModel):
     id: int
-    item : str
+    name : str
+    content : str
+    created_at: datetime = Field(default_factory=get_current_time)
