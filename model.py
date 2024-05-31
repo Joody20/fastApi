@@ -1,9 +1,12 @@
 from pydantic import BaseModel,Field
 from datetime import datetime
+import pytz
 
 
 def get_current_time():
-    return datetime.now()
+    seoul_tz = pytz.timezone('Asia/Seoul')
+    return datetime.now(seoul_tz)
+
 
 class Name(BaseModel):
     id: int

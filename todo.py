@@ -2,6 +2,7 @@ from fastapi import APIRouter,Path
 from model import Name
 from datetime import datetime
 
+
 User_router = APIRouter()
 
 name_list = []
@@ -11,7 +12,7 @@ name_counter = 0
 async def add_name(name:Name) -> dict:
     global name_counter
     name.id = name_counter = name_counter + 1
-    name.created_at = name.created_at or datetime.now()
+    name.created_at = datetime.now()
     name_list.append(name)
 
     return{
